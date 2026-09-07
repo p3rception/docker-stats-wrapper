@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Cancel superseded runs on the same ref (e.g. rapid pushes to a PR branch).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # One runner does everything: lint, type check, tests. dsw has no runtime
+  # dependencies, so only the dev tools are installed. Tests run on the minimum
+  # supported Python (3.11), which also catches accidental use of newer syntax.
+  ci:
+    name: Lint, type check, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install ruff mypy pytest
+      - run: ruff check .
+      - run: mypy dsw/
+      - run: pytest
