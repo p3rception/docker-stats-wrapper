@@ -3,6 +3,8 @@
 `dsw` (docker-stats-wrapper) is a nicer `docker stats`: inline, colored, sortable,
 filterable - without a full-screen takeover.
 
+![dsw showing live container stats](assets/dsw.png)
+
 **[Try the interactive demo](https://dimitrisper.xyz/docker-stats-wrapper/)** and explore
 dsw in your browser, keyboard shortcuts included, no install needed.
 
